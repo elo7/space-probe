@@ -4,7 +4,7 @@ import com.elo7.space_probe.domain.Planet;
 import org.springframework.stereotype.Component;
 
 @Component
-class PlanetToDtoConverter {
+class PlanetToDTOConverter {
     PlanetDTO convert(Planet planet) {
         return new PlanetDTO(planet.getId(), planet.getName());
     }

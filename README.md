@@ -8,9 +8,7 @@
 
 ### ⬆️ Iniciando a aplicação
 
-1. Execute `./mvnw clean package` para construir a aplicação
-1. Execute `./mvnw spring-boot:run` para iniciar a aplicação
-2. Acesse http://localhost:8080
+1. Execute `./mvnw clean spring-boot:run` para iniciar a aplicação
 
 ## 📄 Swagger
 Existe um swagger rodando em http://localhost:8080/swagger-ui/index.html

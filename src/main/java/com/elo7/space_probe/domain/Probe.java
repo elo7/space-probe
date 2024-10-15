@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "probe")
 public class Probe {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -15,16 +16,16 @@ public class Probe {
     @Embedded
     private Position position;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "planet_id", referencedColumnName = "id", nullable = false)
     private Planet planet;
 
     @Deprecated // hibernate only
-    public Probe() {}
+    Probe() {}
 
-    public Probe(String name, Integer x, Integer y, Planet planet) {
+    public Probe(String name, Position position, Planet planet) {
         this.name = name;
-        this.position = new Position(x, y);
+        this.position = position;
         this.planet = planet;
     }
 
@@ -36,15 +37,24 @@ public class Probe {
         return name;
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
+    public Planet getPlanet() {
+        return planet;
+    }
+
     public Integer getXPosition() {
-        return position.getX();
+        return getPosition().getX();
     }
 
     public Integer getYPosition() {
-        return position.getY();
+        return getPosition().getY();
     }
 
     public Integer getPlanetId() {
-        return planet.getId();
+        return getPlanet().getId();
     }
+
 }

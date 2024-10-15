@@ -1,16 +1,17 @@
 package com.elo7.space_probe.ui.probes;
 
+import com.elo7.space_probe.app.ResourceNotFoundException;
 import com.elo7.space_probe.app.planets.FindPlanetService;
 import com.elo7.space_probe.app.probes.CreateProbeService;
 import com.elo7.space_probe.app.probes.FindAllProbeService;
 import com.elo7.space_probe.app.probes.FindProbeService;
 import com.elo7.space_probe.domain.Planet;
 import com.elo7.space_probe.domain.Probe;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/probes")
@@ -21,9 +22,9 @@ class ProbeController {
     private final FindPlanetService findPlanetService;
     private final FindAllProbeService findAllProbeService;
     private final ProbeCreateDTOToModelConverter probeCreateDTOToModelConverter;
-    private final ProbeToDtoConverter probeToDtoConverter;
+    private final ProbeToDTOConverter probeToDtoConverter;
 
-    ProbeController(CreateProbeService createProbeService, FindProbeService findProbeService, FindPlanetService findPlanetService, FindAllProbeService findAllProbeService, ProbeCreateDTOToModelConverter probeCreateDTOToModelConverter, ProbeToDtoConverter probeToDtoConverter) {
+    ProbeController(CreateProbeService createProbeService, FindProbeService findProbeService, FindPlanetService findPlanetService, FindAllProbeService findAllProbeService, ProbeCreateDTOToModelConverter probeCreateDTOToModelConverter, ProbeToDTOConverter probeToDtoConverter) {
         this.createProbeService = createProbeService;
         this.findProbeService = findProbeService;
         this.findPlanetService = findPlanetService;
@@ -42,19 +43,21 @@ class ProbeController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     ProbeDTO findById(@PathVariable("id") Integer id) {
-        Optional<Probe> probe = findProbeService.execute(id);
-        return probe.map(probeToDtoConverter::convert).orElse(null);
+        Probe probe = findProbeService.execute(id).orElseThrow(() -> new ResourceNotFoundException("Probe " + id + " not found"));
+        return probeToDtoConverter.convert(probe);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    ProbeDTO create(@RequestBody ProbeCreateDTO probeCreateDTO) {
-        Optional<Planet> planet = findPlanetService.execute(probeCreateDTO.planetId());
-        Probe probe = probeCreateDTOToModelConverter.convert(
-                probeCreateDTO,
-                planet.orElseThrow(RuntimeException::new)
-        );
+    ProbeDTO create(@RequestBody @Valid ProbeCreateDTO dto) {
+        Planet planet = findPlanetService.execute(dto.planetId())
+                .orElseThrow(() -> new ResourceNotFoundException("Planet " + dto.planetId() + " not found"));
+
+        Probe probe = probeCreateDTOToModelConverter.convert(dto, planet);
+
         Probe createdProbe = createProbeService.execute(probe);
+
         return probeToDtoConverter.convert(createdProbe);
     }
+
 }

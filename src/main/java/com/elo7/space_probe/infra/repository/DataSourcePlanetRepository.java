@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class DataSourcePlanetRepository implements Planets {
+class DataSourcePlanetRepository implements Planets {
     private final SpringDataPlanetRepository repository;
 
-    public DataSourcePlanetRepository(SpringDataPlanetRepository repository) {
+    DataSourcePlanetRepository(SpringDataPlanetRepository repository) {
         this.repository = repository;
     }
 
