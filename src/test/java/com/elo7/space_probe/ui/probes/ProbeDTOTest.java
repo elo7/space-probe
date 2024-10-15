@@ -1,6 +1,5 @@
-package com.elo7.space_probe.ui;
+package com.elo7.space_probe.ui.probes;
 
-import com.elo7.space_probe.ui.probes.ProbeDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

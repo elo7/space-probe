@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class DataSourceProbeRepository implements Probes {
+class DataSourceProbeRepository implements Probes {
     private final SpringDataProbeRepository repository;
 
-    public DataSourceProbeRepository(SpringDataProbeRepository repository) {
+    DataSourceProbeRepository(SpringDataProbeRepository repository) {
         this.repository = repository;
     }
 

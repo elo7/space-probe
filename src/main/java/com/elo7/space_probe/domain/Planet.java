@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static jakarta.persistence.FetchType.EAGER;
 
 @Entity
 @Table(name = "planet")
@@ -23,18 +26,18 @@ public class Planet {
     @Min(value = 1, message = "'height' must be greater than 0")
     private Integer height;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = EAGER)
     @JoinColumn(name = "planet_id")
     private List<Probe> probes;
 
     @Deprecated // hibernate only
-    public Planet() {}
+    Planet() {}
 
     public Planet(String name, Integer width, Integer height) {
         this.name = name;
         this.width = width;
         this.height = height;
-        this.probes = Collections.emptyList();
+        this.probes = new ArrayList<>();
     }
 
     public Integer getId() {

@@ -4,7 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-class Position {
+public class Position {
+
     @Column(name = "x", nullable = false)
     private Integer x;
 
@@ -12,7 +13,7 @@ class Position {
     private Integer y;
 
     @Deprecated // hibernate only
-    public Position() {}
+    Position() {}
 
     public Position(Integer x, Integer y) {
         this.x = x;
@@ -26,4 +27,5 @@ class Position {
     public Integer getY() {
         return y;
     }
+
 }

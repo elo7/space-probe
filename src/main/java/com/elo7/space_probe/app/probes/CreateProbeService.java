@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CreateProbeService {
+
     private final Probes probes;
 
     CreateProbeService(Probes probes) {
